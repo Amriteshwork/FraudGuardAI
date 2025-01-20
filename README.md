@@ -86,7 +86,7 @@ flowchart TB
     class SD,MP,AP,RP frontend
 ```
 
-# Probable Data Structure (Initial perception)
+## Probable Data Structure (Initial perception)
 
 ```mermaid
 erDiagram
@@ -139,4 +139,63 @@ erDiagram
         string revenue_range
         json beneficial_owners
     }
+```
+## Data Pipeline Architecture
+
+```mermaid
+flowchart LR
+    subgraph Sources ["Data Sources"]
+        direction TB
+        TD["Transaction Data<br/>(CSV/JSON)"]
+        CD["Customer Data<br/>(Database)"]
+        FP["Fraud Patterns<br/>(JSON/YAML)"]
+        RD["Regulatory Docs<br/>(PDF/Text)"]
+    end
+
+    subgraph Processing ["Data Processing Pipeline"]
+        direction TB
+        subgraph TP ["Transaction Processing"]
+            TL["Data Loading"]
+            TC["Cleaning"]
+            TF["Feature Extraction"]
+        end
+        
+        subgraph CP ["Customer Processing"]
+            CL["Data Loading"]
+            CC["Cleaning"]
+            CF["Feature Extraction"]
+        end
+        
+        subgraph FPP ["Fraud Pattern Processing"]
+            FPL["Pattern Loading"]
+            FPC["Pattern Conversion"]
+        end
+        
+        subgraph RP ["Regulatory Processing"]
+            RL["Document Loading"]
+            RT["Text Extraction"]
+            RE["Embedding Generation"]
+        end
+    end
+
+    subgraph Output ["Processed Data"]
+        direction TB
+        CTF["Clean Transaction Features"]
+        CCF["Clean Customer Features"]
+        FPV["Fraud Pattern Vectors"]
+        RDV["Regulatory Doc Vectors"]
+    end
+
+    TD --> TL --> TC --> TF --> CTF
+    CD --> CL --> CC --> CF --> CCF
+    FP --> FPL --> FPC --> FPV
+    RD --> RL --> RT --> RE --> RDV
+
+    classDef source fill:#2563eb,stroke:#1d4ed8,stroke-width:2px,color:#fff
+    classDef process fill:#059669,stroke:#047857,stroke-width:2px,color:#fff
+    classDef output fill:#dc2626,stroke:#b91c1c,stroke-width:2px,color:#fff
+    
+    class TD,CD,FP,RD source
+    class TL,TC,TF,CL,CC,CF,FPL,FPC,RL,RT,RE process
+    class CTF,CCF,FPV,RDV output
 ```
