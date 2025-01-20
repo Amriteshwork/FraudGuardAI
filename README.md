@@ -85,3 +85,58 @@ flowchart TB
     class TF,TB,VS,RC,CA,CL,PE,CH modern
     class SD,MP,AP,RP frontend
 ```
+
+# Probable Data Structure (Initial perception)
+
+```mermaid
+erDiagram
+    CUSTOMER ||--o{ TRANSACTION : has
+    CUSTOMER {
+        string customer_id PK
+        string name
+        date date_of_birth
+        string email
+        string phone
+        string address
+        date customer_since
+        string account_type
+        float risk_score
+        string kyc_status
+        date kyc_last_update
+    }
+    TRANSACTION {
+        string transaction_id PK
+        string customer_id FK
+        string type
+        float amount
+        string currency
+        datetime timestamp
+        string status
+        string channel
+        string source_account
+        string destination_account
+        string description
+        string ip_address
+        float risk_score
+        boolean flagged
+    }
+    CUSTOMER ||--o{ KYC_DOCUMENTS : has
+    KYC_DOCUMENTS {
+        string document_id PK
+        string customer_id FK
+        string document_type
+        string document_number
+        date expiry_date
+        string verification_status
+    }
+    CUSTOMER ||--o{ BUSINESS_INFO : has
+    BUSINESS_INFO {
+        string business_id PK
+        string customer_id FK
+        string registration_number
+        string industry_type
+        string company_size
+        string revenue_range
+        json beneficial_owners
+    }
+```
